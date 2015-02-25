@@ -1,0 +1,28 @@
+{
+  "name": "anabeljs",
+  "version": "0.0.1",
+  "description": "Anabel Suit tool for super express aplications",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/S0c5/anabeljs.git"
+  },
+  "keywords": [
+    "Utils",
+    "tool",
+    "express"
+  ],
+  "author": "s0c5 <david.barinas.dev@gmail.com> (http://www.olinguito.com.co/)",
+  "license": "GPL 2.0",
+  "bugs": {
+    "url": "https://github.com/S0c5/anabeljs/issues"
+  },
+  "homepage": "https://github.com/S0c5/anabeljs",
+  "dependencies": {
+    "express": "^4.12.0",
+    "lodash": "^3.3.1"
+  }
+}
