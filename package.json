@@ -1,6 +1,6 @@
 {
   "name": "anabeljs",
-  "version": "0.0.3",
+  "version": "0.1.1",
   "description": "Anabel Suit tool for super express aplications",
   "main": "index.js",
   "scripts": {

@@ -51,7 +51,6 @@ Anabel.prototype.config = function(options){
 
 Anabel.prototype.require = function (name) {
     return require(opts.dirName + name);
-
 };
 
 
