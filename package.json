@@ -1,6 +1,6 @@
 {
   "name": "anabeljs",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Anabel Suit tool for super express aplications",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "tool",
     "express"
   ],
-  "author": "s0c5 <david.barinas.dev@gmail.com> (http://www.olinguito.com.co/)",
+  "author": "s0c5 <david.barinas.dev@gmail.com>",
   "license": "GPL 2.0",
   "bugs": {
     "url": "https://github.com/S0c5/anabeljs/issues"
