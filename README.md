@@ -1,6 +1,11 @@
 # anabeljs
 Anabel Js, suit tool for express aplications
 
+1. Install Latest: 
+```Bash
+  $ npm install anabeljs
+```
+
 ##### before Anabel: 
 ```JavaScript
 var express   = require('express');
