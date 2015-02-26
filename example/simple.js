@@ -1,7 +1,6 @@
 var anabel  = require('../');
-var app = anabel.init();
 
-app.config({
+var app = anabel.init({
     dirName: __dirname,
     libPath: './lib',
     middleWarePath: './middleware',
@@ -25,5 +24,5 @@ app.get('/sub', function(req, res, next){
 
 
 app.listen(8888,function(){
-    console.info("listen in 8889" )
+    console.info("listen in 8888" )
 });

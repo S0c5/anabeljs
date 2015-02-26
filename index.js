@@ -15,7 +15,11 @@ var Anabel = function (){
     };
 };
 
-Anabel.prototype.init = function(){
+Anabel.prototype.init = function(options){
+    
+    if(options){
+        this.config(options);
+    }
 
     var app = express();
     var self = this;
@@ -37,8 +41,7 @@ Anabel.prototype.init = function(){
 
 Anabel.prototype.config = function(options){
 
-    if(!options)
-    {
+    if(!options){
         options = {}
     }
     // default opts
