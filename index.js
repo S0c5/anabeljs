@@ -49,6 +49,10 @@ Anabel.prototype.config = function(options){
     });
 };
 
+Anabel.prototype.implement = function(name){
+    return require(this.opts.dirName + '/' +  this.opts.libPath + '/' + name)
+};
+
 Anabel.prototype.require = function (name) {
     return require(opts.dirName + name);
 };
@@ -57,6 +61,7 @@ Anabel.prototype.require = function (name) {
 Anabel.prototype.useMiddleware = function (name){
     this.app.use(this.middleware(name));
 };
+
 
 Anabel.prototype.middleware = function (name) {
     return require(this.opts.dirName + '/' +  this.opts.middleWarePath + '/' + name);
