@@ -49,8 +49,10 @@ Anabel.prototype.config = function(options){
     });
 };
 
-Anabel.prototype.implement = function(name){
-    return require(this.opts.dirName + '/' +  this.opts.libPath + '/' + name)
+Anabel.prototype.implement = function(libs){
+    libs.map(function(name, index){
+        return require(this.opts.dirName + '/' +  this.opts.libPath + '/' + name)
+    });
 };
 
 Anabel.prototype.require = function (name) {
