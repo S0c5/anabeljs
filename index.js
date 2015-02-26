@@ -40,7 +40,7 @@ Anabel.prototype.init = function(options){
 };
 
 Anabel.prototype.config = function(options){
-    console.log("here");
+
     if(!options){
         options = {}
     }
@@ -53,8 +53,9 @@ Anabel.prototype.config = function(options){
 };
 
 Anabel.prototype.implement = function(libs){
+    self = this
     libs.map(function(name, index){
-        return require(this.opts.dirName + '/' +  this.opts.libPath + '/' + name)
+        return require(self.opts.dirName + '/' +  this.opts.libPath + '/' + name)
     });
 };
 
