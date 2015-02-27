@@ -62,7 +62,7 @@ Anabel.prototype.config = function(options){
 Anabel.prototype.implement = function(libs){
     var self = this;
     libs.map(function(name, index){
-        return require(self.libPath)
+        return require(self.libPath + '/' + name)
     });
 };
 
