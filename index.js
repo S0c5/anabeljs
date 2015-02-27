@@ -87,7 +87,7 @@ Anabel.prototype.getAllFiles = function(dirName){
 
         var name        = path.basename(file, path.extname(file));
         var capitalName = name[0].toUpperCase() + name.slice(1);
-        exports[capitalName] = require("./" + name);
+        exports[capitalName] = require(dirName + '/' + name);
     });
 };
 Anabel.prototype.useMiddleware = function (name){
