@@ -1,10 +1,12 @@
+'use strict';
 /**
  * Created by s0c5 on 25/02/15.
  */
 
 var express = require('express');
 var _       = require('lodash');
-
+var fs      = require('fs');
+var path    = require('path');
 
 var Anabel = function (){
     this.opts = {
@@ -46,38 +48,61 @@ Anabel.prototype.config = function(options){
     }
     // default opts
 
-    self = this;
+    var self = this;
     Object.keys(options).map(function(value, index){
         self.opts[value] = options[value] || this.opts[value];
     });
+    
+    this.modelPath = this.opts.dirName + '/' + this.opts.modelPath + '/';
+    this.libPath = this.opts.dirName + '/' + this.opts.libPath + '/';
+    this.middlewarePath = this.opts.dirName + '/' + this.opts.middleWarePath;
 };
 
 Anabel.prototype.implement = function(libs){
-    self = this
+    var self = this;
     libs.map(function(name, index){
-        return require(self.opts.dirName + '/' +  self.opts.libPath + '/' + name)
+        return require(self.libPath)
     });
 };
 
 Anabel.prototype.require = function (name) {
     return require(this.opts.dirName +'/' + name);
 };
+Anabel.prototype.getModels = function(){
+    this.getAllFiles(this.modelPath);
+};
+Anabel.prototype.getLibs = function(){
+    this.getAllFiles(this.libPath);
+};
+Anabel.prototype.getMiddlewares = function(){
+    this.getAllFiles(this.middlewarePath);
+};
+Anabel.prototype.getAllFiles = function(dirName){
+    fs.readdirSync(dirName).map(function(file) {
+        return path.join(__dirname, file);
+    }).filter(function(file) {
+        return fs.statSync(file).isFile() && file !== __filename && (path.extname(file) === '.js' || path.extname(file) === '.coffee');
+    }).forEach(function(file) {
 
-
+        var name        = path.basename(file, path.extname(file));
+        var capitalName = name[0].toUpperCase() + name.slice(1);
+        exports[capitalName] = require("./" + name);
+    });
+};
 Anabel.prototype.useMiddleware = function (name){
     this.app.use(this.middleware(name));
 };
 
 Anabel.prototype.middleware = function (name) {
-    return require(this.opts.dirName + '/' +  this.opts.middleWarePath + '/' + name);
+    return require(this.middlewarePath);
 };
 
 Anabel.prototype.lib = function (name) {
-    return require(this.opts.dirName + '/' +  this.opts.libPath + '/' + name)
+    return require(this.libPath)
 };
 
 Anabel.prototype.model = function (name) {
-    return require(this.opts.dirName + '/' +  this.opts.modelPath + '/' + name)
+    return require(this.modelPath)
 };
 
 
