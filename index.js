@@ -79,6 +79,7 @@ Anabel.prototype.getMiddlewares = function(){
     this.getAllFiles(this.middlewarePath);
 };
 Anabel.prototype.getAllFiles = function(dirName){
+    var exports = {};
     fs.readdirSync(dirName).map(function(file) {
         return path.join(dirName, file);
     }).filter(function(file) {
@@ -89,6 +90,7 @@ Anabel.prototype.getAllFiles = function(dirName){
         var capitalName = name[0].toUpperCase() + name.slice(1);
         exports[capitalName] = require(dirName + '/' + name);
     });
+    return exports;
 };
 Anabel.prototype.useMiddleware = function (name){
     this.app.use(this.middleware(name));
