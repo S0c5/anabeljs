@@ -80,7 +80,7 @@ Anabel.prototype.getMiddlewares = function(){
 };
 Anabel.prototype.getAllFiles = function(dirName){
     fs.readdirSync(dirName).map(function(file) {
-        return path.join(__dirname, file);
+        return path.join(dirName, file);
     }).filter(function(file) {
         return fs.statSync(file).isFile() && file !== __filename && (path.extname(file) === '.js' || path.extname(file) === '.coffee');
     }).forEach(function(file) {
