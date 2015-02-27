@@ -23,10 +23,10 @@ Anabel.prototype.init = function(options){
 
     var app = express();
     var self = this;
-
+    
     Object.keys(app).map(function (value, index) {
 
-        if(Object.prototype.toString.call(app[value]) == '[object Function]')
+        if(Object.prototype.toString.call(app[value]) === '[object Function]')
         {
             self[value] = function(){
                 app[value].apply(app, arguments);
@@ -60,14 +60,13 @@ Anabel.prototype.implement = function(libs){
 };
 
 Anabel.prototype.require = function (name) {
-    return require(this.opts.dirName + name);
+    return require(this.opts.dirName +'/' + name);
 };
 
 
 Anabel.prototype.useMiddleware = function (name){
     this.app.use(this.middleware(name));
 };
-
 
 Anabel.prototype.middleware = function (name) {
     return require(this.opts.dirName + '/' +  this.opts.middleWarePath + '/' + name);

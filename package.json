@@ -23,6 +23,7 @@
   "homepage": "https://github.com/S0c5/anabeljs",
   "dependencies": {
     "express": "^4.12.0",
-    "lodash": "^3.3.1"
+    "lodash": "^3.3.1",
+    "tiper": "0.0.1"
   }
 }
