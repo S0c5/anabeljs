@@ -7,6 +7,7 @@ var express = require('express');
 var _       = require('lodash');
 var fs      = require('fs');
 var path    = require('path');
+var tiper   = require('tiper');
 
 var Anabel = function (){
     this.opts = {
@@ -93,16 +94,25 @@ Anabel.prototype.useMiddleware = function (name){
     this.app.use(this.middleware(name));
 };
 
-Anabel.prototype.middleware = function (name) {
-    return require(this.middlewarePath);
+Anabel.prototype.middleware = function (middleware) {
+    if(tiper.is(middleware, tiper.FUNCTION))
+    {
+        return this.app.use(middleware);
+    }
+    
+    if(!tiper.is(middleware, tiper.STRING))
+    {
+        throw 'you can not load the middleware, this can be a function or a string type'
+    }
+    return require(this.middlewarePath + '/' + middleware);
 };
 
-Anabel.prototype.lib = function (name) {
-    return require(this.libPath)
+Anabel.prototype.lib = function (lib) {
+    return require(this.libPath + '/' + lib)
 };
 
-Anabel.prototype.model = function (name) {
-    return require(this.modelPath)
+Anabel.prototype.model = function (model) {
+    return require(this.modelPath + '/' + model)
 };
 
 
