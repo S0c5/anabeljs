@@ -70,13 +70,13 @@ Anabel.prototype.require = function (name) {
     return require(this.opts.dirName +'/' + name);
 };
 Anabel.prototype.getModels = function(){
-    this.getAllFiles(this.modelPath);
+    return this.getAllFiles(this.modelPath);
 };
 Anabel.prototype.getLibs = function(){
-    this.getAllFiles(this.libPath);
+    return this.getAllFiles(this.libPath);
 };
 Anabel.prototype.getMiddlewares = function(){
-    this.getAllFiles(this.middlewarePath);
+    return this.getAllFiles(this.middlewarePath);
 };
 Anabel.prototype.getAllFiles = function(dirName){
     var exports = {};
