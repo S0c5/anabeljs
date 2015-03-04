@@ -117,5 +117,24 @@ Anabel.prototype.model = function (model) {
     return require(this.modelPath + '/' + model)
 };
 
+Anabel.prototype.route = function(routes){
+    var self = this;
+    
+    routes.map(function(route){
+        
+        if(!route.path || !route.controller || !route.method || !route.parameters )
+        {
+            throw 'You need all parameters for the routes';
+        }
+        
+        
+        route.method = route.method.toUpperCase();
+        // implement  documentation with parameter for mongoose
+        
+        self.app[route.method](route.path, route.controller);
+        
+    });
 
-module.exports = exports = new Anabel();
+};
+
+module.exports =  new Anabel();
