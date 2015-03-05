@@ -9,13 +9,33 @@ var fs      = require('fs');
 var path    = require('path');
 var tiper   = require('tiper');
 
+
+var parameterController   = require('./lib/parameter');
+var parameter             = require('./lib/parameter/parameter');
+
+
 var Anabel = function (){
+    
+    this._documentation = {
+        
+        
+    };
+    
     this.opts = {
         dirName: __dirname,
         libPath: './lib',
         middleWarePath: './middleware',
         modelPath: './models'
     };
+    
+    this['validator'] = {};
+
+    for(var key in parameter.validator)
+    {
+
+        this['validator'][key] = parameter.validator[key];
+    }
+
 };
 
 Anabel.prototype.init = function(options){
@@ -28,7 +48,17 @@ Anabel.prototype.init = function(options){
     var self = this;
     
     Object.keys(app).map(function (value, index) {
-
+        if(value === 'route'){
+            
+            self[value] = function(){
+                if(tiper.is(arguments[0], tiper.ARRAY)){
+                    return self._route.apply(self, arguments);
+                }
+                return app[value].apply(app, arguments);
+            };
+            
+            return;
+        }
         if(Object.prototype.toString.call(app[value]) === '[object Function]')
         {
             self[value] = function(){
@@ -117,24 +147,53 @@ Anabel.prototype.model = function (model) {
     return require(this.modelPath + '/' + model)
 };
 
-Anabel.prototype.route = function(routes){
+Anabel.prototype._route = function(routes){
     var self = this;
-    
+
     routes.map(function(route){
-        
-        if(!route.path || !route.controller || !route.method || !route.parameters )
+
+        if(!route.path || !route.controller || !route.method  )
         {
             throw 'You need all parameters for the routes';
         }
-        
-        
-        route.method = route.method.toUpperCase();
-        // implement  documentation with parameter for mongoose
-        
-        self.app[route.method](route.path, route.controller);
-        
-    });
 
+        route.method = route.method.toLowerCase();
+
+
+        if(route.input !== undefined){
+            var input = route.input;
+
+            var notCorrectType = tiper.get(input) !== tiper.ARRAY && tiper.get(input) !==  tiper.OBJECT;
+            if(notCorrectType){
+                throw  'incorrect format for input option';
+            }
+            if (tiper.is(input, tiper.OBJECT))
+            {
+
+                if(input.field === undefined)
+                    throw 'you must define a field';
+                if(input.schema === undefined)
+                    throw  'you need specify an schema';
+                self.app[route.method](route.path, parameterController(input.field, input.schema));
+            }else{
+                for(var item in input)
+                {
+                    item = input[item];
+
+                    if(item.field === undefined)
+                        throw 'you must define a field';
+
+                    if(item.schema === undefined)
+                        throw  'you need specify an schema';
+
+                    self.app[route.method](route.path, parameterController(item.field, item.schema));
+                }
+            }
+        }
+
+        self.app[route.method](route.path, route.controller);
+        // implement  documentation with parameter for mongoose
+    });
 };
 
 module.exports =  new Anabel();
