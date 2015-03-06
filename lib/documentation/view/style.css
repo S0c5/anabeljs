@@ -1,0 +1,51 @@
+body {
+    height: 100%;
+    width: 100%;
+}
+.title {
+    color: rgba(37,75,116,0.74);
+    text-align: center;
+}
+.endpoint {
+    overflow: hidden;
+    background-color: #e7f0f7;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #43b2b2;
+    border-radius: 2px;
+    height: 33;
+}
+.endpoint:selection {
+    height: 300;
+    -webkit-transition: height 0.4s;
+    -moz-transition: height 0.4s;
+    -ms-transition: height 0.4s;
+    -o-transition: height 0.4s;
+    transition: height 0.4s;
+}
+.method {
+    height: 23px;
+    text-align: center;
+    display: block;
+    width: 55px;
+    border-radius: 2px;
+    font-family: "Droid Sans", sans-serif;
+    padding: 5px 5px 5px 5px;
+    color: #fff;
+    background-color: #3cb9c1;
+    font-size: 15px;
+}
+.link {
+    display: block;
+    font-family: monospace;
+    top: 5px;
+    margin-left: 86px;
+    margin-top: -20px;
+}
+a {
+    color: #000;
+    text-decoration: none;
+}

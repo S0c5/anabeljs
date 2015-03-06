@@ -1,7 +1,7 @@
 var anabel  = require('../');
 var morgan  = require('morgan');
 var bodyParser = require('body-parser');
-
+var documentation = require('../lib/documentation/documentation');
 
 
 var app = anabel.init({
@@ -43,7 +43,7 @@ var book = function(){
         Books[book.serial] = book;
         res.json(book);
     };
-    console.log(anabel.validator);
+
     this.create.input = [
         {
             field: 'body',
@@ -86,32 +86,55 @@ var user = function(){
             schema: userModel
         }
     ];
-    this.create.output = {
-        serial: Number,
-        tittle: String,
-        author: String
-    };
+    this.create.output = [userModel];
 };
 
 var userCRUD = new user();
-anabel.route([
+
+var bookRouter = anabel.route([
     {
+        name: 'book',
         method: 'POST',
         path: '/book',
         description: 'create a new book',
         controller: bookCRUD.create,
         input: bookCRUD.create.input,
         output: bookCRUD.create.output
+    }
+]);
+
+var userRouter = anabel.route([
+    {
+        name: 'user',
+        method: 'POST',
+        path: '/user/',
+        description: 'create a new user',
+        controller: userCRUD.create,
+        input: userCRUD.create.input,
+        output: userCRUD.create.output
     },
     {
-        method: 'POST',
-        path: '/user',
-        description: 'create a new user',
+        name: 'user',
+        method: 'GET',
+        path: '/user/:id',
+        description: 'retrieve a user by id',
         controller: userCRUD.create,
         input: userCRUD.create.input,
         output: userCRUD.create.output
     }
 ]);
+
+
+var mainRouter = anabel.Router();
+
+mainRouter.use('/subLevel/:id', userRouter);
+mainRouter.use('/topLevel/', bookRouter);
+
+
+
+app.use(mainRouter);
+
+anabel.documentation('/docs');
 
 app.listen(8889,function(){
     console.info("listen in 8888" )

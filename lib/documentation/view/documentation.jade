@@ -1,0 +1,19 @@
+html(lang="en")
+    head
+        title="API Documentation"
+        style
+            include style.css
+    body
+        for paths, tittle in  endPoints
+            div.tittle
+                 span= tittle
+            for path in paths
+                div.endPoints
+                    div.base
+                        span.method=path.method
+                        span.link=path.path
+                    div.info
+                        span.description=path.description
+                    div.io
+
+              
