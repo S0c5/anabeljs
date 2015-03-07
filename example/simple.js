@@ -93,49 +93,54 @@ var userCRUD = new user();
 
 var bookRouter = anabel.route([
     {
-        name: 'book',
         method: 'POST',
         path: '/book',
-        description: 'create a new book',
         controller: bookCRUD.create,
-        input: bookCRUD.create.input,
-        output: bookCRUD.create.output
+        options: {
+            name: 'book',
+            description: 'create a new book',
+            input: bookCRUD.create.input,
+            output: bookCRUD.create.output
+        }
     }
 ]);
 
 var userRouter = anabel.route([
     {
-        name: 'user',
+
         method: 'POST',
         path: '/user/',
-        description: 'create a new user',
         controller: userCRUD.create,
-        input: userCRUD.create.input,
-        output: userCRUD.create.output
+        options: {
+            name: 'user',
+            description: 'create a new user',
+            input: userCRUD.create.input,
+            output: userCRUD.create.output
+        }
     },
     {
-        name: 'user',
         method: 'GET',
         path: '/user/:id',
-        description: 'retrieve a user by id',
         controller: userCRUD.create,
-        input: userCRUD.create.input,
-        output: userCRUD.create.output
+        options: {
+            name: 'user',
+            description: 'retrieve a user by id',
+            input: userCRUD.create.input,
+            output: userCRUD.create.output
+        }
     }
 ]);
 
 
 var mainRouter = anabel.Router();
 
-mainRouter.use('/subLevel/:id', userRouter);
+mainRouter.use('/subLevel/', userRouter);
 mainRouter.use('/topLevel/', bookRouter);
-
-
 
 app.use(mainRouter);
 
 anabel.documentation('/docs');
 
-app.listen(8889,function(){
+app.listen(8899,function(){
     console.info("listen in 8888" )
 });
