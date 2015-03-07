@@ -23,6 +23,7 @@
   "homepage": "https://github.com/S0c5/anabeljs",
   "dependencies": {
     "body-parser": "^1.12.0",
+    "ejs": "^2.3.1",
     "express": "^4.12.0",
     "jade": "^1.9.2",
     "lodash": "^3.3.1",

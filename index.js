@@ -145,8 +145,10 @@ Anabel.prototype.model = function (model) {
 };
 
 Anabel.prototype.mountValidator = function(route, router){
-    var input = route.input
+    var input = route.options.input;
+    
     var notCorrectType = tiper.get(input) !== tiper.ARRAY && tiper.get(input) !==  tiper.OBJECT;
+    
     if(notCorrectType){
         throw  'incorrect format for input option';
     }
@@ -192,31 +194,38 @@ Anabel.prototype._route = function(routes){
         {
             throw 'You need all parameters for the routes';
         }
-
+        var options = {};
+        
         route.method = route.method.toLowerCase();
 
-
-        if(route.input !== undefined){
-            self.mountValidator(route, router);
+        if(route.options !== undefined)
+        {
+            if(route.input !== undefined){
+                self.mountValidator(route, router);
+            }
+            options = route.options;
+            
         }
-                
-        
 
         if(router._documentation === undefined){
             router._documentation = [];
         }
-        
+
+
         var documentation = {
             method: route.method,
             path: route.path,
-            name: route.name? route.name : 'unknown',
-            description: route.description ? route.description : 'unknown',
-            input: route.input  ? route.input: 'unknown',
-            output: route.output ?  parameter.lib.outputParser(route.output) : 'unknown'
+            name: options.name? options.name : 'unknown',
+            description: options.description ? options.description : 'unknown',
+            input: options.input  ? parameter.lib.inputParser(options.input): 'unknown',
+            output: options.output ? parameter.lib.outputParser(options.output) : 'unknown'
         };
 
-        router[route.method](route.path, route.controller);
         router._documentation.push(documentation);
+                
+
+        router[route.method](route.path, route.controller);
+        
     });
     return router;
 };
