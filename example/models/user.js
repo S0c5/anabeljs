@@ -2,7 +2,7 @@
  * Created by s0c45 on 5/03/15.
  */
 
-var anabel      = require('anabeljs');
+var anabel      = require('../../');
 var mongoose    = require('mongoose');
 
 
