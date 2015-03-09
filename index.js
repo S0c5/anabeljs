@@ -233,8 +233,7 @@ Anabel.prototype.documentation = function(path){
     var self = this;
     var endPoints = documentator.lib.generate(self.app);
     
-    console.log(endPoints);
-    
+
     self.app.get(path, documentator.controller(endPoints))
 };
 
