@@ -175,12 +175,58 @@ Anabel.prototype.mountValidator = function(route, router){
             if(item.schema === undefined)
                 throw  'you need specify an schema';
 
-            if(tiper.getPrimitive(item.schema) === 'model'){
-                item.schema = parameter.lib.mongooseParser(item.schema);
-            }
             router[route.method](route.path, parameter.controller(item.field, item.schema));
         }
     }
+};
+Anabel.prototype.mountMiddle = function(middle, route, router){
+    var self = this;
+    var options = route.options;
+
+    if(tiper.is(middle, tiper.FUNCTION)){
+        return router[route.method](route.path, middle)
+    }
+    if(tiper.is(middle, tiper.ARRAY)){
+        for(var i in middle)
+        {
+            var handler = middle[i];
+            if(tiper.is(handler, tiper.STRING)){
+                router[route.method](route.path, self.require(handler));
+                continue;
+            }
+            if(tiper.is(handler, tiper.FUNCTION)){
+                router[route.method](route.path, middle);
+                continue;
+            }
+            throw 'handler type Dont support '
+        }
+        return;
+    }
+    throw 'handler type dont support';
+};
+
+Anabel.prototype.handleParser = function(handlers){
+    var handle = [];
+    var self = this;
+    if(tiper.is(handlers, tiper.FUNCTION)){
+        return [handlers];
+    }
+    if(tiper.is(handlers, tiper.ARRAY)){
+        for(var index in handlers){
+            var tmp = handlers[index];
+
+            if(tiper.is(tmp, tiper.STRING)){
+                handle.push(require(self.middlewarePath + '/' + tmp));
+                continue;
+            }
+            if(tiper.is(tmp, tiper.FUNCTION)){
+                handle.push(tmp);
+                continue;
+            }
+            console.log("the handler is not support will be ignored");
+        }
+    }
+    return handle;
 };
 Anabel.prototype._route = function(routes){
     var self = this;
@@ -188,7 +234,8 @@ Anabel.prototype._route = function(routes){
     if(tiper.is(routes, tiper.OBJECT)){
         routes = [routes];
     }
-    routes.map(function(route){
+    for(var j in routes){
+        var route = routes[j];
 
         if(!route.path || !route.controller || !route.method  )
         {
@@ -200,11 +247,15 @@ Anabel.prototype._route = function(routes){
 
         if(route.options !== undefined)
         {
-            if(route.input !== undefined){
+            if(route.options.middleware !== undefined){
+                self.mountMiddle(route.options.middleware, route, router);
+            }
+            if(route.options.input !== undefined){
                 self.mountValidator(route, router);
             }
             options = route.options;
-            
+        }else{
+            route.options = {};
         }
 
         if(router._documentation === undefined){
@@ -222,17 +273,17 @@ Anabel.prototype._route = function(routes){
         };
 
         router._documentation.push(documentation);
-                
 
-        router[route.method](route.path, route.controller);
-        
-    });
+
+
+        router[route.method](route.path, route.controller, self.handleParser(route.options.handler));
+
+    }
     return router;
 };
 Anabel.prototype.documentation = function(path){
     var self = this;
     var endPoints = documentator.lib.generate(self.app);
-    
 
     self.app.get(path, documentator.controller(endPoints))
 };
