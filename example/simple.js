@@ -1,7 +1,6 @@
 var anabel  = require('../');
 var morgan  = require('morgan');
 var bodyParser = require('body-parser');
-var documentation = require('../lib/documentation/documentation');
 
 
 var app = anabel.init({
@@ -141,6 +140,6 @@ app.use(mainRouter);
 
 anabel.documentation('/docs');
 
-app.listen(8899,function(){
+app.listen(8888,function(){
     console.info("listen in 8888" )
 });
