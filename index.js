@@ -122,19 +122,22 @@ Anabel.prototype.getAllFiles = function(dirName){
 Anabel.prototype.useMiddleware = function (middleware){
     var self = this;
     if(tiper.is(middleware, tiper.FUNCTION)){
-        return middleware;
+        self.app.use(middleware);
     }
 
     if(tiper.is(middleware, tiper.STRING)){
-        return require(this.middlewarePath + '/' + middleware);
+        self.app.use(require(this.middlewarePath + '/' + middleware));
     }
 
     if(tiper.is(middleware, tiper.ARRAY)){
         for(var index in middleware) {
             var mid = middleware[index];
-            self.app.use(self.useMiddleware(mid));
+            self.useMiddleware(mid);
         }
+        return ;
     }
+
+    throw new Error("the middleware doesnt have a correct format");
 };
 
 Anabel.prototype.middleware = function (middleware) {
