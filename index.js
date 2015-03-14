@@ -191,7 +191,7 @@ Anabel.prototype.mountMiddle = function(middle, route, router){
         {
             var handler = middle[i];
             if(tiper.is(handler, tiper.STRING)){
-                router[route.method](route.path, self.require(handler));
+                router[route.method](route.path, self.middleware(handler));
                 continue;
             }
             if(tiper.is(handler, tiper.FUNCTION)){
