@@ -127,7 +127,7 @@ Anabel.prototype.useMiddleware = function (middleware){
     }
 
     if(tiper.is(middleware, tiper.STRING)){
-        return self.app.use(self.require(this.middlewarePath + '/' + middleware));
+        return self.app.use(require(this.middlewarePath + '/' + middleware));
     }
 
     if(tiper.is(middleware, tiper.ARRAY)){
@@ -150,7 +150,7 @@ Anabel.prototype.middleware = function (middleware) {
     }
 
     if(tiper.is(middleware, tiper.STRING)){
-        return [self.require(this.middlewarePath + '/' + middleware)];
+        return [require(this.middlewarePath + '/' + middleware)];
     }
 
     if(tiper.is(middleware, tiper.ARRAY)){
