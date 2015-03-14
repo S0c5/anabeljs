@@ -119,21 +119,43 @@ Anabel.prototype.getAllFiles = function(dirName){
     });
     return exports;
 };
-Anabel.prototype.useMiddleware = function (name){
-    this.app.use(this.middleware(name));
+Anabel.prototype.useMiddleware = function (middleware){
+    var self = this;
+    if(tiper.is(middleware, tiper.FUNCTION)){
+        return middleware;
+    }
+
+    if(tiper.is(middleware, tiper.STRING)){
+        return require(this.middlewarePath + '/' + middleware);
+    }
+
+    if(tiper.is(middleware, tiper.ARRAY)){
+        for(var index in middleware) {
+            var mid = middleware[index];
+            self.app.use(self.useMiddleware(mid));
+        }
+    }
 };
 
 Anabel.prototype.middleware = function (middleware) {
-    if(tiper.is(middleware, tiper.FUNCTION))
-    {
-        return this.app.use(middleware);
+    var self = this;
+    var middles = [];
+
+    if(tiper.is(middleware, tiper.FUNCTION)){
+        return [middleware];
     }
-    
-    if(!tiper.is(middleware, tiper.STRING))
-    {
-        throw 'you can not load the middleware, this can be a function or a string type'
+
+    if(tiper.is(middleware, tiper.STRING)){
+        return [require(this.middlewarePath + '/' + middleware)];
     }
-    return require(this.middlewarePath + '/' + middleware);
+
+    if(tiper.is(middleware, tiper.ARRAY)){
+        for(var index in middleware) {
+            var mid = middleware[index];
+            middles.push(self.middleware(mid));
+        }
+    }
+    return middles;
 };
 
 Anabel.prototype.lib = function (lib) {
@@ -205,9 +227,41 @@ Anabel.prototype.mountMiddle = function(middle, route, router){
     throw 'handler type dont support';
 };
 
+
+Anabel.prototype.handler = function(handler){
+    var self    = this;
+    var array   = [];
+    var pathHandler = './lib/handler';
+    if(tiper.is(handler, tiper.STRING)){
+        return [require(pathHandler + '/' +handler)];
+    }
+
+    if(tiper.is(handler, tiper.FUNCTION)){
+        return [handler];
+    }
+    if(tiper.is(handler, tiper.ARRAY)){
+        for(var index in handler){
+            var tmp = handler[index];
+
+            if(tiper.is(tmp, tiper.STRING)){
+                array.push(require(pathHandler + '/' + handler));
+                continue;
+            }
+            if(tiper.is(tmp, tiper.FUNCTION)){
+                array.push(tmp);
+                continue;
+            }
+            throw new Error('The input handler doesnt have a correct format ');
+        }
+    }else {
+        throw new Error('the input handler doesnt have a correct format');
+    }
+
+    return array;
+};
+
 Anabel.prototype.handleParser = function(handlers){
-    var handle = [];
-    var self = this;
+    var handle = [];var self = this;
     if(tiper.is(handlers, tiper.FUNCTION)){
         return [handlers];
     }
@@ -216,7 +270,7 @@ Anabel.prototype.handleParser = function(handlers){
             var tmp = handlers[index];
 
             if(tiper.is(tmp, tiper.STRING)){
-                handle.push(require(self.middlewarePath + '/' + tmp));
+                handle.push(self.middleware(self.middlewarePath + '/' + tmp));
                 continue;
             }
             if(tiper.is(tmp, tiper.FUNCTION)){

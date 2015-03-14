@@ -18,7 +18,7 @@ var userSchema = new mongoose.Schema({
     name: {
         type: String,
         default: 'Anonymous',
-        validate: /^[a-z]+$/
+        validate: /^[a-z ]+$/
     },
     password: {
         required: true,

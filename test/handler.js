@@ -29,18 +29,17 @@ describe('Prepare Database', function(){
     it('connect', function(done){
         mongoose.connect(config.db, function(err, connection){
             if(err){
-                console.log(err);
+
                 throw 'Error on connect to database';
             }
-            done();
-            console.log('Connect correct to ' + config.db);
+            return done();
         });
     });
     it('drop database', function(done){
 
         mongoose.connection.db.dropDatabase(function(err){
             if(err)
-                done(err);
+                return done(err);
             done();
         });
 
@@ -70,7 +69,6 @@ describe('Mongoo-http-error', function(){
         user.save(function(err, user){
             if(err){
                 var friendly  = mongooseError.handler(err);
-                console.log(friendly);
                 if( friendly.message.length === 3  && friendly.status === 400 ){
                     BadUser.type  = "a";
                     return done();
@@ -80,17 +78,15 @@ describe('Mongoo-http-error', function(){
             return done("error Frienly error");
         });
     });
-    it('Enum Error', function(done){
+    it('Error format Regex', function(done){
 
         var user = new UserModel(BadUser);
 
         user.save(function(err, user){
-            console.log(user);
             if(err){
 
                 var friendly  = mongooseError.handler(err);
 
-                console.log(friendly);
                 if( friendly.message.length === 2  && friendly.status === 400 ){
                     BadUser.name  = "david barinas";
                     return done();
@@ -100,24 +96,33 @@ describe('Mongoo-http-error', function(){
             return done(new Error("not should save"));
         });
     });
+    it('validator error Regex', function(done){
+
+        var user = new UserModel(BadUser);
+
+        user.save(function(err, user){
+            if(err){
+
+                var friendly  = mongooseError.handler(err);
+
+                if( friendly.message.length === 1  && friendly.status === 400 ){
+                    BadUser.password = '1234';
+                    return done();
+                }
+
+            }
+            return done(new Error("not should save"));
+        });
+    });
     it('Enum Error', function(done){
 
         var user = new UserModel(BadUser);
 
         user.save(function(err, user){
-            console.log(user);
             if(err){
-
-                var friendly  = mongooseError.handler(err);
-
-                console.log(friendly);
-                if( friendly.message.length === 1  && friendly.status === 400 ){
-
-                    return done();
-                }
-                return done(new Error("un catch error"));
+                done(new Error("the model dont shoulded store :( "));
             }
-            return done(new Error("not should save"));
+            return done();
         });
     });
 });

@@ -2,7 +2,7 @@ var anabel          = require('../');
 var morgan          = require('morgan');
 var bodyParser      = require('body-parser');
 var documentation   = require('../lib/documentation/documentation');
-var methodOverride  = require('method-override');
+
 
 var app = anabel.init({
     dirName: __dirname,
@@ -65,11 +65,12 @@ var userRouter = anabel.route([
             description: 'retrieve a user by id',
             input: [],
             output: User.create.output,
-            middleware: [middleWare],
-            handler: [handler]
+            middleware: ['oauth2'],
+            handler: anabel.handler(['mongoose-error'])
         }
     }
 ]);
+
 
 app.use('/user', userRouter);
 anabel.documentation('/docs');
