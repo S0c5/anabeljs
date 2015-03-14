@@ -248,7 +248,7 @@ Anabel.prototype.handler = function(handler){
             var tmp = handler[index];
 
             if(tiper.is(tmp, tiper.STRING)){
-                array.push(require(pathHandler + '/' + handler));
+                array.push(require(pathHandler + '/' + tmp));
                 continue;
             }
             if(tiper.is(tmp, tiper.FUNCTION)){
