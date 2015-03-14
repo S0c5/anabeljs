@@ -121,12 +121,13 @@ Anabel.prototype.getAllFiles = function(dirName){
 };
 Anabel.prototype.useMiddleware = function (middleware){
     var self = this;
+    console.log(tiper.get(middleware));
     if(tiper.is(middleware, tiper.FUNCTION)){
-        self.app.use(middleware);
+        return self.app.use(middleware);
     }
 
     if(tiper.is(middleware, tiper.STRING)){
-        self.app.use(require(this.middlewarePath + '/' + middleware));
+        return self.app.use(self.require(this.middlewarePath + '/' + middleware));
     }
 
     if(tiper.is(middleware, tiper.ARRAY)){
@@ -149,7 +150,7 @@ Anabel.prototype.middleware = function (middleware) {
     }
 
     if(tiper.is(middleware, tiper.STRING)){
-        return [require(this.middlewarePath + '/' + middleware)];
+        return [self.require(this.middlewarePath + '/' + middleware)];
     }
 
     if(tiper.is(middleware, tiper.ARRAY)){
