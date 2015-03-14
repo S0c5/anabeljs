@@ -121,7 +121,7 @@ Anabel.prototype.getAllFiles = function(dirName){
 };
 Anabel.prototype.useMiddleware = function (middleware){
     var self = this;
-    console.log(tiper.get(middleware));
+
     if(tiper.is(middleware, tiper.FUNCTION)){
         return self.app.use(middleware);
     }
