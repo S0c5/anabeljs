@@ -146,11 +146,11 @@ Anabel.prototype.middleware = function (middleware) {
     var middles = [];
 
     if(tiper.is(middleware, tiper.FUNCTION)){
-        return [middleware];
+        return middleware;
     }
 
     if(tiper.is(middleware, tiper.STRING)){
-        return [require(this.middlewarePath + '/' + middleware)];
+        return require(this.middlewarePath + '/' + middleware);
     }
 
     if(tiper.is(middleware, tiper.ARRAY)){
