@@ -221,7 +221,7 @@ Anabel.prototype.mountMiddle = function(middle, route, router){
                 continue;
             }
             if(tiper.is(handler, tiper.FUNCTION)){
-                router[route.method](route.path, middle);
+                router[route.method](route.path, handler);
                 continue;
             }
             throw 'handler type Dont support '
