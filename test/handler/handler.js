@@ -8,12 +8,12 @@ var mongoose    = require('mongoose');
 var should      = require('should');
 
 var faker       = require('faker');
-var handler     = require('../lib/handler');
+var handler     = require('../../lib/handler');
 var config      = require('./config');
 var tiper       = require('tiper');
 
 
-var mongooseError   = require('../lib/handler/mongoose-error/lib');
+var mongooseError   = require('../../lib/handler/mongoose-error/lib');
 var UserModel       = require('./models/user');
 
 var BadUser = {
