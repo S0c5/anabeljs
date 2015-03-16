@@ -37,7 +37,9 @@ var Anabel = function (){
             type: String,
                 format: this.validator.onlyHexaLetters,
                 required: true
-        }
+        },
+        Mixed: '___MIXED___ ',
+        Query: this.Mixed
     }
 };
 
