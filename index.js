@@ -14,17 +14,17 @@ var parameter       = require('./lib/parameter');
 var documentator    = require('./lib/documentation');
 
 var Anabel = function (){
-    
+
     this._documentation = {
     };
-    
+
     this.opts = {
         dirName: __dirname,
         libPath: './lib',
         middleWarePath: './middleware',
         modelPath: './models'
     };
-    
+
     this['validator'] = {};
 
     for(var key in parameter.lib.validator)
@@ -35,8 +35,8 @@ var Anabel = function (){
     this.types = {
         ObjectId: {
             type: String,
-                format: this.validator.onlyHexaLetters,
-                required: true
+            format: this.validator.onlyHexaLetters,
+            required: true
         },
         Mixed: '___MIXED___ ',
         Query: this.Mixed
@@ -44,24 +44,24 @@ var Anabel = function (){
 };
 
 Anabel.prototype.init = function(options){
-    
+
     if(options){
         this.config(options);
     }
 
     var app = express();
     var self = this;
-    
+
     Object.keys(app).map(function (value, index) {
         if(value === 'route'){
-            
+
             self[value] = function(){
                 if(tiper.is(arguments[0], tiper.ARRAY) || tiper.is(arguments[0], tiper.OBJECT)){
                     return self._route.apply(self, arguments);
                 }
                 return app[value].apply(app, arguments);
             };
-            
+
             return;
         }
         if(Object.prototype.toString.call(app[value]) === '[object Function]')
@@ -88,7 +88,7 @@ Anabel.prototype.config = function(options){
     Object.keys(options).map(function(value, index){
         self.opts[value] = options[value] || this.opts[value];
     });
-    
+
     this.modelPath = this.opts.dirName + '/' + this.opts.modelPath + '/';
     this.libPath = this.opts.dirName + '/' + this.opts.libPath + '/';
     this.middlewarePath = this.opts.dirName + '/' + this.opts.middleWarePath;
@@ -180,9 +180,9 @@ Anabel.prototype.model = function (model) {
 
 Anabel.prototype.mountValidator = function(route, router){
     var input = route.options.input;
-    
+
     var notCorrectType = tiper.get(input) !== tiper.ARRAY && tiper.get(input) !==  tiper.OBJECT;
-    
+
     if(notCorrectType){
         throw  'incorrect format for input option';
     }
@@ -308,7 +308,7 @@ Anabel.prototype._route = function(routes){
             throw 'You need all parameters for the routes';
         }
         var options = {};
-        
+
         route.method = route.method.toLowerCase();
 
         if(route.options !== undefined)
@@ -335,7 +335,7 @@ Anabel.prototype._route = function(routes){
             name: options.name? options.name : 'unknown',
             description: options.description ? options.description : 'unknown',
             input: options.input  ? parameter.lib.inputParser(options.input): 'unknown',
-            output: options.output ? parameter.lib.outputParser(options.output) : 'unknown'
+            output: options.output ? parameter.lib.inputParserSchema(options.output) : 'unknown'
         };
 
         router._documentation.push(documentation);
