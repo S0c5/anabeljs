@@ -32,7 +32,13 @@ var Anabel = function (){
 
         this['validator'][key] = parameter.lib.validator[key];
     }
-
+    this.types = {
+        ObjectId: {
+            type: String,
+                format: this.validator.onlyHexaLetters,
+                required: true
+        }
+    }
 };
 
 Anabel.prototype.init = function(options){
@@ -345,6 +351,7 @@ Anabel.prototype.documentation = function(path){
 
     self.app.get(path, documentator.controller(endPoints))
 };
+
 
 Anabel.prototype.Router = express.Router;
 
