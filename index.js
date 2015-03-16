@@ -335,7 +335,7 @@ Anabel.prototype._route = function(routes){
             name: options.name? options.name : 'unknown',
             description: options.description ? options.description : 'unknown',
             input: options.input  ? parameter.lib.inputParser(options.input): 'unknown',
-            output: options.output ? parameter.lib.inputParserSchema(options.output) : 'unknown'
+            output: options.output ? parameter.lib.outputParser(options.output) : 'unknown'
         };
 
         router._documentation.push(documentation);
