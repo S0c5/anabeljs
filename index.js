@@ -193,9 +193,7 @@ Anabel.prototype.mountValidator = function(route, router){
             throw 'you must define a field';
         if(input.schema === undefined)
             throw  'you need specify an schema';
-        if(tiper.getPrimitive(input.schema) === 'model'){
-            input.schema = parameter.lib.mongooseParser(input.schema);
-        }
+
         router[route.method](route.path, parameterController(input.field, input.schema));
     }else{
 
@@ -354,13 +352,13 @@ Anabel.prototype.documentation = function(path, more){
     var endPoints = documentator.lib.generate(self.app);
 
     if(more !== undefined){
-       for(var index in more){
-           var doc = more[index];
-           if(endPoints[doc.name] === undefined){
-               endPoints[doc.name] = [];
-           }
-           endPoints[doc.name].push(doc);
-       }
+        for(var index in more){
+            var doc = more[index];
+            if(endPoints[doc.name] === undefined){
+                endPoints[doc.name] = [];
+            }
+            endPoints[doc.name].push(doc);
+        }
     }
     self.app.get(path, documentator.controller(endPoints))
 };
