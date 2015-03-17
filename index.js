@@ -294,6 +294,16 @@ Anabel.prototype.handleParser = function(handlers){
     }
     return handle;
 };
+Anabel.prototype.makeDocumentation = function(method, path, options){
+    return {
+        method: method,
+        path: path,
+        name: options.name? options.name : 'unknown',
+        description: options.description ? options.description : 'unknown',
+        input: options.input  ? parameter.lib.inputParser(options.input): 'unknown',
+        output: options.output ? parameter.lib.outputParser(options.output) : 'unknown'
+    }
+}
 Anabel.prototype._route = function(routes){
     var self = this;
     var router = express.Router();
@@ -329,17 +339,9 @@ Anabel.prototype._route = function(routes){
         }
 
 
-        var documentation = {
-            method: route.method,
-            path: route.path,
-            name: options.name? options.name : 'unknown',
-            description: options.description ? options.description : 'unknown',
-            input: options.input  ? parameter.lib.inputParser(options.input): 'unknown',
-            output: options.output ? parameter.lib.outputParser(options.output) : 'unknown'
-        };
+        var documentation = self.makeDocumentation(route.method, route.path, options);
 
         router._documentation.push(documentation);
-
 
 
         router[route.method](route.path, route.controller, self.handleParser(route.options.handler));
@@ -347,10 +349,12 @@ Anabel.prototype._route = function(routes){
     }
     return router;
 };
-Anabel.prototype.documentation = function(path){
+Anabel.prototype.documentation = function(path, more){
     var self = this;
     var endPoints = documentator.lib.generate(self.app);
-
+    if(more !== undefined){
+        endPoints = endPoints.concat(more)
+    }
     self.app.get(path, documentator.controller(endPoints))
 };
 
