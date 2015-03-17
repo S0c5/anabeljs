@@ -352,8 +352,15 @@ Anabel.prototype._route = function(routes){
 Anabel.prototype.documentation = function(path, more){
     var self = this;
     var endPoints = documentator.lib.generate(self.app);
+
     if(more !== undefined){
-        endPoints = endPoints.concat(more)
+       for(var index in more){
+           var doc = more[index];
+           if(endPoints[doc.name] === undefined){
+               endPoints[doc.name] = [];
+           }
+           endPoints[doc.name].push(doc);
+       }
     }
     self.app.get(path, documentator.controller(endPoints))
 };
