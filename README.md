@@ -72,7 +72,7 @@ you can use a route function in anabeljs for make a logically and useful routing
     file: routes/user/user.js
     description: this is an controller
   */
-  var User = anabel.model(''
+  var User = anabel.model('user');
   
   exports.list: {
     permission: ['user:view'], // this is an example for implement a ACL 
@@ -119,6 +119,32 @@ you can use a route function in anabeljs for make a logically and useful routing
   app.use('/user', router);
 ```
 
+#### Example  
+
+```JavaScript
+  
+  anabel.route([
+    {
+      method: {STRING},
+      path: {STRING},
+      controller: {FUNCTION},
+      options: { // optional
+           name: {STRING}, // femiliy of endpoint example : User
+           description: {STRING}, // description of endpoint
+           input: [ 
+              {field: {STRING}, schema: {OBJECT}} // schema for fields 
+           ],
+           output: {OBJECT}, // output schema
+           middleware: [{STRING}, {FUNCTION}], // if is string this is loaded from middleware directory 
+           handler: [{FUNCTION}] // see handler section:  only allows a function, you can use a predefined handlers from anabeljs.handler  
+      }
+    }
+  ]);
+  
+  
+```
+
+* **method**: 
 
 #### 1.1.1) Input Validator
 
