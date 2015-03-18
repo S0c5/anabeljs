@@ -244,70 +244,83 @@ The error will be showed to user, like that:
   
 ```
 
+##### Input validator:
 
-##### before Anabel: 
 ```JavaScript
-var express   = require('express');
-var app       = express();
-
-var userModel    = require('../../../moodels/Model'); // this ../../ is asdjasldasd
-var sum      = require('../../../lib/sum');
-var sub      = require('../../../lib/sub');
+  // formats
+  String
+  Number
+  Date
+  Array
+  anabel.types.ObjecId
+  anabel.types.Mixed
   
-app.get('/sum', function(req, res, next){
-    res.json({result: sum(2,2) })
-});
-
-app.get('/sub', function(req, res, next){
-    res.json({result: sub(5, 3) });
-});
-
-app.get('/users', funtion(req, res, next){
-    userModel.find({}, function(err, users){
-        res.json(users);
-    })
-});
-
-
-(...)
-```
-
-##### with Anabel:
-
-
-```JavaScript
-var anabel  = require('anabeljs');
-var app = anabel.init();
-
-
-
-app.config({
-    dirName: __dirname,
-    libPath: './lib',
-    middleWarePath: './middleware',
-    modelPath: './models'
-  });
-
-var userModel = app.model('user');
-var sum       = app.lib('sum');
-var sub       = app.lib('sub');
-
-app.get('/sum', function(req, res, next){
-    res.json({result: sum(2,2) })
-});
-
-app.get('/sub', function(req, res, next){
-    res.json({result: sub(5, 3) });
-});
-
-app.get('/users', funtion(req, res, next){
-    userModel.find({}, function(err, users){
-        res.json(users);
-    })
-});
-    
-
-
+  // schema basic
+  
+  var schema = {
+    name: String,
+    lastName: String,
+    years: Number
+  }
+  
+  // schema with format options
+  
+  var schema = {
+    name: {
+      type: String,
+      format: anabel.validator.onlyLetters
+      required: true
+    },
+    years: {
+      type: String,
+      format: function(x){return x>18};
+    },
+    gender: {
+      type: String,
+      format: ['f','m']
+    },
+    city: {
+      type: String,
+      default: 'None'
+    }
+  }
+  
+  // schema mixed
+  
+  var schema =  {
+      basic: String,
+      array: [
+        {
+          name: String,
+          years: Number
+        }
+      ],
+      mixed: {
+          one: {
+            type: string,
+            defaut: 'dafaut value'
+          }
+          two: Number,
+          three: [
+            String
+          ]
+      }
+      validatos: {
+        one: {
+          type: String,
+          format: /[a-z]/ regular expresion
+        },
+        two:{
+          type: Number,
+          format: function(x) { return x>100 }
+        },
+        three: {
+          type: String,
+          format: ['a','b','c']
+        }
+      }
+      
+  }
 ```
 
 
