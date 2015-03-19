@@ -279,6 +279,10 @@ Anabel.prototype.handleParser = function(handlers){
         for(var index in handlers){
             var tmp = handlers[index];
 
+            if(tiper.is(tmp, tiper.ARRAY)){
+                handle.concat(self.handleParser(tmp));
+                continue;
+            };
             if(tiper.is(tmp, tiper.STRING)){
                 handle.push(self.middleware(self.middlewarePath + '/' + tmp));
                 continue;
