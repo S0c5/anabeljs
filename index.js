@@ -14,7 +14,9 @@ var parameter       = require('./lib/parameter');
 var documentator    = require('./lib/documentation');
 
 var Anabel = function (){
-
+    this.state = {
+        init: false
+    };
     this._documentation = {
     };
 
@@ -49,6 +51,9 @@ Anabel.prototype.init = function(options){
         this.config(options);
     }
 
+
+    if(!this.state.init) return self.app;
+
     var app = express();
     var self = this;
 
@@ -73,6 +78,9 @@ Anabel.prototype.init = function(options){
         }
         self[value] = app[value];
     });
+
+    this.state.init = true;
+
     this.app = app;
     return this;
 };
