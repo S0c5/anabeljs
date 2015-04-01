@@ -202,7 +202,7 @@ Anabel.prototype.mountValidator = function(route, router){
         if(input.schema === undefined)
             throw  'you need specify an schema';
 
-        router[route.method](route.path, parameterController(input.field, input.schema));
+        router[route.method](route.path,  parameter.controller(input.field, input.schema));
     }else{
 
         for(var item in input)
@@ -245,6 +245,9 @@ Anabel.prototype.mountMiddle = function(middle, route, router){
     throw 'handler type dont support';
 };
 
+Anabel.prototype.validateParameter = function(field, schema){
+    return parameter.controller(field, schema);
+};
 
 Anabel.prototype.handler = function(handler){
     var self    = this;
