@@ -52,7 +52,7 @@ Anabel.prototype.init = function(options){
     }
 
 
-    if(!this.state.init) return this.app;
+    if(this.state.init) return this.app;
 
     var app = express();
     var self = this;
