@@ -16,6 +16,8 @@ var tiper       = require('tiper');
 var mongooseError   = require('../../lib/handler/mongoose-error/lib');
 var UserModel       = require('./models/user');
 
+mongoose.Promise = require('q').Promise;
+
 var BadUser = {
     cedula: "123SAD",
     type: "f",
@@ -53,7 +55,7 @@ describe('Mongoo-http-error', function(){
             if(err){
                 var friendly = mongooseError.handler(err);
 
-                if( friendly.message === 'cedula: need type number' && friendly.status === 400 ){
+                if( friendly.message[0] === 'cedula: need type be a number' && friendly.status === 400 ){
                     BadUser.cedula = 1234;
                     return done();
                 }
@@ -69,13 +71,14 @@ describe('Mongoo-http-error', function(){
         user.save(function(err, user){
             if(err){
                 var friendly  = mongooseError.handler(err);
+
                 if( friendly.message.length === 3  && friendly.status === 400 ){
                     BadUser.type  = "a";
                     return done();
                 }
-                return done("error Frienly error");
+                return done("error Friendly error");
             }
-            return done("error Frienly error");
+            return done("error Friendly error");
         });
     });
     it('Error format Regex', function(done){

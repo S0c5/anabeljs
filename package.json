@@ -1,6 +1,6 @@
 {
   "name": "anabeljs",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Anabel Suit tool for super express aplications",
   "main": "index.js",
   "scripts": {
@@ -26,12 +26,11 @@
     "ejs": "^2.3.1",
     "express": "^4.12.0",
     "faker": "^2.1.2",
-    "jade": "^1.9.2",
     "lodash": "^3.3.1",
     "mocha": "^2.2.1",
-    "mongoose": "^3.8.24",
+    "mongoose": "^4.7.2",
     "morgan": "^1.5.1",
-    "q": "^1.2.0",
+    "q": "^1.4.1",
     "should": "^5.1.0",
     "tiper": "git+https://github.com/S0c5/tiper.git",
     "underscore": "^1.8.2"
